@@ -1,4 +1,4 @@
-package ev3dev.bridge.server;
+package ev3dev.bridge.client.bridge.server;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
