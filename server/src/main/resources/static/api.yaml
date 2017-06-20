@@ -10,6 +10,8 @@ basePath: "/api"
 tags:
 - name: "subscription"
   description: "subscription services"
+- name: "publish"
+  description: "publish services"
 - name: "messages"
   description: "messages services"
 schemes:
@@ -39,17 +41,17 @@ paths:
           description: "bad request"
         500:
           description: "internal server error"
-  /subscribe/{id}/:
+  /subscribe/{subscriber}/:
     get:
       tags:
       - "subscription"
-      summary: "get a subscription by id"
+      summary: "get a subscription by subscriber"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "subscriber"
         in: "path"
         required: true
         type: "string"
@@ -67,13 +69,13 @@ paths:
     delete:
       tags:
       - "subscription"
-      summary: "delete a subscription by id"
+      summary: "delete a subscription by subscriber"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "subscriber"
         in: "path"
         required: true
         type: "string"
@@ -88,11 +90,11 @@ paths:
           description: "bad request"
         500:
           description: "internal server error"
-  /message/{topic}/:
+  /publish/{topic}/:
     put:
       tags:
-      - "messages"
-      summary: "put a new message in a topic"
+      - "publish"
+      summary: "publish a new message in a topic"
       consumes:
       - "application/json"
       produces:
@@ -114,17 +116,17 @@ paths:
           description: "bad request"
         500:
           description: "internal server error"
-  /messages/{subscription}/:
+  /messages/{subscriber}/:
     get:
       tags:
       - "messages"
-      summary: "put a new message in a topic"
+      summary: "get the messages from a subscriber"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: "subscription"
+      - name: "subscriber"
         in: "path"
         required: true
         type: "string"
@@ -147,13 +149,13 @@ definitions:
   Message:
     type: "object"
     required:
-    - originator
-    - lines
+    - subscriber
+    - text
     properties:
-      originator:
+      subscriber:
         type: "string"
-      lines:
-        $ref: "#/definitions/ArrayOfStrings"
+      text:
+        type: "string"
   MessageResponse:
     type: "object"
     properties:
@@ -173,17 +175,17 @@ definitions:
   SubscribeResponse:
     type: "object"
     required:
-    - id
+    - subscriber
     properties:
-      id:
+      subscriber:
         type: "string"
   SubcriptionsResponse:
     type: object
     required:
     - topics
-    - id
+    - subscriber
     properties:
-      id:
+      subscriber:
         type: "string"
       topics:
         $ref: "#/definitions/ArrayOfStrings"
