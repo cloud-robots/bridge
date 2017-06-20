@@ -39,8 +39,12 @@ paths:
             $ref: "#/definitions/SubscribeResponse"
         400:
           description: "bad request"
+          schema:
+            $ref: "#/definitions/Error"
         500:
           description: "internal server error"
+          schema:
+            $ref: "#/definitions/Error"
   /subscribe/{subscriber}/:
     get:
       tags:
@@ -59,13 +63,19 @@ paths:
         200:
           description: "successful operation"
           schema:
-            $ref: "#/definitions/SubcriptionsResponse"
+            $ref: "#/definitions/SubscriptionsResponse"
         404:
           description: "subscription not found"
+          schema:
+            $ref: "#/definitions/Error"
         400:
           description: "bad request"
+          schema:
+            $ref: "#/definitions/Error"
         500:
           description: "internal server error"
+          schema:
+            $ref: "#/definitions/Error"
     delete:
       tags:
       - "subscription"
@@ -86,10 +96,16 @@ paths:
             $ref: "#/definitions/SubscribeResponse"
         404:
           description: "subscription not found"
+          schema:
+            $ref: "#/definitions/Error"
         400:
           description: "bad request"
+          schema:
+            $ref: "#/definitions/Error"
         500:
           description: "internal server error"
+          schema:
+            $ref: "#/definitions/Error"
   /publish/{topic}/:
     put:
       tags:
@@ -114,8 +130,12 @@ paths:
           description: "successful operation"
         400:
           description: "bad request"
+          schema:
+            $ref: "#/definitions/Error"
         500:
           description: "internal server error"
+          schema:
+            $ref: "#/definitions/Error"
   /messages/{subscriber}/:
     get:
       tags:
@@ -179,7 +199,7 @@ definitions:
     properties:
       subscriber:
         type: "string"
-  SubcriptionsResponse:
+  SubscriptionsResponse:
     type: object
     required:
     - topics
@@ -189,3 +209,16 @@ definitions:
         type: "string"
       topics:
         $ref: "#/definitions/ArrayOfStrings"
+  Error:
+    type: object
+    properties:
+      timestamp :
+        type: "string"
+        format: "date-time"
+      status:
+        type: "number"
+        format: "int32"
+      error:
+        type: "string"
+      message:
+        type: "string"
