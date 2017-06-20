@@ -1,0 +1,224 @@
+swagger: "2.0"
+info:
+  description: "This is the API for ev3dev bridge server"
+  version: "1.0.0"
+  title: "ev3dev-java bridge server API"
+  contact:
+    url: "https://github.com/ev3dev-lang-java/bridge"
+host: "localhost:8080"
+basePath: "/api"
+tags:
+- name: "subscription"
+  description: "subscription services"
+- name: "publish"
+  description: "publish services"
+- name: "messages"
+  description: "messages services"
+schemes:
+- "http"
+paths:
+  /subscribe/:
+    put:
+      tags:
+      - "subscription"
+      summary: "put a new subscription"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SubscribeRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/SubscribeResponse"
+        400:
+          description: "bad request"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "internal server error"
+          schema:
+            $ref: "#/definitions/Error"
+  /subscribe/{subscriber}/:
+    get:
+      tags:
+      - "subscription"
+      summary: "get a subscription by subscriber"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "subscriber"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/SubscriptionsResponse"
+        404:
+          description: "subscription not found"
+          schema:
+            $ref: "#/definitions/Error"
+        400:
+          description: "bad request"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "internal server error"
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      tags:
+      - "subscription"
+      summary: "delete a subscription by subscriber"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "subscriber"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/SubscribeResponse"
+        404:
+          description: "subscription not found"
+          schema:
+            $ref: "#/definitions/Error"
+        400:
+          description: "bad request"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "internal server error"
+          schema:
+            $ref: "#/definitions/Error"
+  /publish/{topic}/:
+    put:
+      tags:
+      - "publish"
+      summary: "publish a new message in a topic"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "topic"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Message"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "bad request"
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "internal server error"
+          schema:
+            $ref: "#/definitions/Error"
+  /messages/{subscriber}/:
+    get:
+      tags:
+      - "messages"
+      summary: "get the messages from a subscriber"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "subscriber"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        404:
+          description: "no messages"
+        400:
+          description: "bad request"
+        500:
+          description: "internal server error"
+definitions:
+  ArrayOfStrings:
+    type: "array"
+    items:
+      type: "string"
+  Message:
+    type: "object"
+    required:
+    - subscriber
+    - text
+    properties:
+      subscriber:
+        type: "string"
+      text:
+        type: "string"
+  MessageResponse:
+    type: "object"
+    properties:
+      messages:
+        $ref: "#/definitions/ArrayOfMessages"
+  ArrayOfMessages:
+    type: "array"
+    items:
+       $ref: "#/definitions/Message"
+  SubscribeRequest:
+    type: "object"
+    required:
+    - topics
+    properties:
+      topics:
+        $ref: "#/definitions/ArrayOfStrings"
+  SubscribeResponse:
+    type: "object"
+    required:
+    - subscriber
+    properties:
+      subscriber:
+        type: "string"
+  SubscriptionsResponse:
+    type: object
+    required:
+    - topics
+    - subscriber
+    properties:
+      subscriber:
+        type: "string"
+      topics:
+        $ref: "#/definitions/ArrayOfStrings"
+  Error:
+    type: object
+    properties:
+      timestamp :
+        type: "string"
+        format: "date-time"
+      status:
+        type: "number"
+        format: "int32"
+      error:
+        type: "string"
+      message:
+        type: "string"
