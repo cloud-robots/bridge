@@ -1,0 +1,189 @@
+swagger: "2.0"
+info:
+  description: "This is the API for ev3dev bridge server"
+  version: "1.0.0"
+  title: "ev3dev bridge server API"
+  contact:
+    url: "https://github.com/ev3dev-lang-java/bridge"
+host: "localhost:8080"
+basePath: "/api"
+tags:
+- name: "subscription"
+  description: "subscription services"
+- name: "messages"
+  description: "messages services"
+schemes:
+- "http"
+paths:
+  /subscribe/:
+    put:
+      tags:
+      - "subscription"
+      summary: "put a new subscription"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/SubscribeRequest"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/SubscribeResponse"
+        403:
+          description: "bad request"
+        500:
+          description: "internal server error"
+  /subscribe/{id}/:
+    get:
+      tags:
+      - "subscription"
+      summary: "get a subscription by id"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/SubcriptionsResponse"
+        404:
+          description: "subscription not found"
+        403:
+          description: "bad request"
+        500:
+          description: "internal server error"
+    delete:
+      tags:
+      - "subscription"
+      summary: "delete a subscription by id"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/SubscribeResponse"
+        404:
+          description: "subscription not found"
+        403:
+          description: "bad request"
+        500:
+          description: "internal server error"
+  /message/{topic}/:
+    put:
+      tags:
+      - "messages"
+      summary: "put a new message in a topic"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "topic"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Message"
+      responses:
+        200:
+          description: "successful operation"
+        403:
+          description: "bad request"
+        500:
+          description: "internal server error"
+  /messages/{subscription}/:
+    get:
+      tags:
+      - "messages"
+      summary: "put a new message in a topic"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "subscription"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        404:
+          description: "no messages"
+        403:
+          description: "bad request"
+        500:
+          description: "internal server error"
+definitions:
+  ArrayOfStrings:
+    type: "array"
+    items:
+      type: "string"
+  Message:
+    type: "object"
+    required:
+    - originator
+    - lines
+    properties:
+      originator:
+        type: "string"
+      lines:
+        $ref: "#/definitions/ArrayOfStrings"
+  MessageResponse:
+    type: "object"
+    properties:
+      messages:
+        $ref: "#/definitions/ArrayOfMessages"
+  ArrayOfMessages:
+    type: "array"
+    items:
+       $ref: "#/definitions/Message"
+  SubscribeRequest:
+    type: "object"
+    required:
+    - topics
+    properties:
+      topics:
+        $ref: "#/definitions/ArrayOfStrings"
+  SubscribeResponse:
+    type: "object"
+    required:
+    - id
+    properties:
+      id:
+        type: "string"
+  SubcriptionsResponse:
+    type: object
+    required:
+    - topics
+    - id
+    properties:
+      id:
+        type: "string"
+      topics:
+        $ref: "#/definitions/ArrayOfStrings"
