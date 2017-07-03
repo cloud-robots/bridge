@@ -1,5 +1,6 @@
 package ev3dev.bridge.server
 
+import org.amshove.kluent.`should be instance of`
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.boot.test.context.SpringBootTest
@@ -15,11 +16,13 @@ class ApplicationTests {
 
     @Test
     fun `application class can be created`() {
-        var application: Application
+        val application = Application()
+
+        application `should be instance of` application::class
     }
 
     @Test
     fun `main could be invoked`() {
-        main(arrayOf())
+        main(arrayOf<String>())
     }
 }
