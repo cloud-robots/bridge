@@ -3,9 +3,10 @@ package cloud.robots.bridge.server.controller
 import cloud.robots.bridge.server.exceptions.MissingParametersException
 import cloud.robots.bridge.server.model.SubscribeRequest
 import cloud.robots.bridge.server.model.SubscribeResponse
+import cloud.robots.bridge.server.utils.UniqueUUIDGenerator
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
+@Suppress("unused")
 @RestController()
 class ServerController {
 
@@ -19,6 +20,6 @@ class ServerController {
         if (subscribeRequest.topics.isEmpty()) {
             throw MissingParametersException("topics must be provided")
         }
-        return SubscribeResponse(UUID.randomUUID().toString())
+        return SubscribeResponse(UniqueUUIDGenerator.new)
     }
 }

@@ -1,8 +1,7 @@
 package cloud.robots.bridge.server.model
 
 import cloud.robots.bridge.server.exceptions.ServerException
-import java.text.SimpleDateFormat
-import java.util.*
+import cloud.robots.bridge.server.utils.GetDateTime
 
 
 data class ErrorResponse(val status: Int = 0,
@@ -12,12 +11,5 @@ data class ErrorResponse(val status: Int = 0,
     constructor(serverException: ServerException) : this(serverException.status.value(),
             serverException.error, serverException.message)
 
-    lateinit var timestamp: String
-
-    init {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
-        dateFormat.timeZone = TimeZone.getTimeZone("UTC")
-        timestamp = dateFormat.format(Date())
-    }
-
+    val timestamp = GetDateTime.UTC
 }
