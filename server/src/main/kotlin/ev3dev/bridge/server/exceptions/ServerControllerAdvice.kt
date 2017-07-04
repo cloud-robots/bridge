@@ -7,14 +7,22 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.annotation.ExceptionHandler
 
+@Suppress("unused")
 @org.springframework.web.bind.annotation.ControllerAdvice
 class ServerControllerAdvice {
 
     companion object {
         private val logger = LoggerFactory.getLogger(ServerControllerAdvice::class.java)
+
         private const val SERVER_EXCEPTION = "server exception"
         private const val MESSAGE_NOT_READABLE = "message mot readable exception"
         private const val GENERIC_EXCEPTION = "generic exception"
+
+        const val INVALID_REQUEST = "invalid request"
+        const val REQUEST_CANNOT_INTERPRETED = "the request to the server can not be interpreted"
+
+        const val SERVER_ERROR = "server error"
+        const val SERVER_ENCOUNTER_ERROR = "the server has encounter an error"
     }
 
     @ExceptionHandler(value = ServerException::class)
@@ -28,16 +36,14 @@ class ServerControllerAdvice {
     fun messageNotReadableHandler(exception: HttpMessageNotReadableException): ResponseEntity<ErrorResponse> {
         logger.error(MESSAGE_NOT_READABLE, exception)
         return ResponseEntity(ErrorResponse(HttpStatus.BAD_REQUEST.value(),
-                "invalid request", "the request to the server can not be interpreted")
-                , HttpStatus.BAD_REQUEST)
+                INVALID_REQUEST, REQUEST_CANNOT_INTERPRETED), HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(value = Exception::class)
-    fun genericExceptionHandler(exception: HttpMessageNotReadableException): ResponseEntity<ErrorResponse> {
+    fun genericExceptionHandler(exception: Exception): ResponseEntity<ErrorResponse> {
         logger.error(GENERIC_EXCEPTION, exception)
         return ResponseEntity(ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "server error", "the server has encounter an error")
-                , HttpStatus.INTERNAL_SERVER_ERROR)
+                SERVER_ERROR, SERVER_ENCOUNTER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR)
 
     }
 }

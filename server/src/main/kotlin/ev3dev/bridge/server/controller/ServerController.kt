@@ -4,6 +4,7 @@ import ev3dev.bridge.server.exceptions.MissingParametersException
 import ev3dev.bridge.server.model.SubscribeRequest
 import ev3dev.bridge.server.model.SubscribeResponse
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController()
 class ServerController {
@@ -18,6 +19,6 @@ class ServerController {
         if (subscribeRequest.topics.isEmpty()) {
             throw MissingParametersException("topics must be provided")
         }
-        return SubscribeResponse("guay")
+        return SubscribeResponse(UUID.randomUUID().toString())
     }
 }
