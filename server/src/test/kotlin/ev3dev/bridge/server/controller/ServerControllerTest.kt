@@ -42,7 +42,7 @@ class ServerControllerTest {
         const val TOPICS_MUST_BE_PROVIDED = "topics must be provided"
 
         const val INVALID_REQUEST = "invalid request"
-        const val REQUEST_CANNOT_INTERPRETED = "the request to the server can not be interpreted"
+        const val REQUEST_CANNOT_BE_INTERPRETED = "the request to the server can not be interpreted"
     }
 
     fun <Type : Any> Type.put(path: String) =
@@ -71,7 +71,7 @@ class ServerControllerTest {
                 .body<ErrorResponse>()
 
         errorResponse.error `should equal to` INVALID_REQUEST
-        errorResponse.message `should equal to` REQUEST_CANNOT_INTERPRETED
+        errorResponse.message `should equal to` REQUEST_CANNOT_BE_INTERPRETED
     }
 
     @Test
