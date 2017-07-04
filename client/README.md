@@ -1,3 +1,3 @@
 # cloud-robots.bridge.client
 
-Client library for ev3dev.bridge
+Client library for cloud-robots.bridge

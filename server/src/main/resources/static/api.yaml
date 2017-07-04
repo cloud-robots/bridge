@@ -1,10 +1,10 @@
 swagger: "2.0"
 info:
-  description: "This is the API for ev3dev bridge server"
+  description: "This is the API for cloud-robots bridge server"
   version: "1.0.0"
   title: "cloud-robots bridge server API"
   contact:
-    url: "https://github.com/ev3dev-lang-java/bridge"
+    url: "https://github.com/cloud-robots/bridge"
 host: "localhost:8080"
 basePath: "/api"
 tags:
