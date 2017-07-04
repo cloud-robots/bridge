@@ -1,8 +1,8 @@
-package ev3dev.bridge.server.controller
+package cloud.robots.bridge.server.controller
 
-import ev3dev.bridge.server.exceptions.MissingParametersException
-import ev3dev.bridge.server.model.SubscribeRequest
-import ev3dev.bridge.server.model.SubscribeResponse
+import cloud.robots.bridge.server.exceptions.MissingParametersException
+import cloud.robots.bridge.server.model.SubscribeRequest
+import cloud.robots.bridge.server.model.SubscribeResponse
 import org.springframework.web.bind.annotation.*
 import java.util.*
 

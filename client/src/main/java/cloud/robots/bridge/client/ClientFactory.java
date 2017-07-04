@@ -1,4 +1,4 @@
-package ev3dev.bridge.client;
+package cloud.robots.bridge.client;
 
 public class ClientFactory
 {

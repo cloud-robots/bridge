@@ -1,4 +1,4 @@
-package ev3dev.bridge.server.exceptions
+package cloud.robots.bridge.server.exceptions
 
 import org.springframework.http.HttpStatus
 

@@ -1,4 +1,4 @@
-package ev3dev.bridge.server
+package cloud.robots.bridge.server
 
 import org.amshove.kluent.`should be instance of`
 import org.junit.Test

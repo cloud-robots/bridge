@@ -1,6 +1,6 @@
-package ev3dev.bridge.server.exceptions
+package cloud.robots.bridge.server.exceptions
 
-import ev3dev.bridge.server.model.ErrorResponse
+import cloud.robots.bridge.server.model.ErrorResponse
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

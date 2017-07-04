@@ -1,9 +1,9 @@
-package ev3dev.bridge.server.controller
+package cloud.robots.bridge.server.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import ev3dev.bridge.server.model.ErrorResponse
-import ev3dev.bridge.server.model.SubscribeRequest
-import ev3dev.bridge.server.model.SubscribeResponse
+import cloud.robots.bridge.server.model.ErrorResponse
+import cloud.robots.bridge.server.model.SubscribeRequest
+import cloud.robots.bridge.server.model.SubscribeResponse
 import org.amshove.kluent.`should equal to`
 import org.amshove.kluent.shouldNotBeBlank
 import org.junit.Test

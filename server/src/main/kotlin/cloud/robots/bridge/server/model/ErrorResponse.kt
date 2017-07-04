@@ -1,6 +1,6 @@
-package ev3dev.bridge.server.model
+package cloud.robots.bridge.server.model
 
-import ev3dev.bridge.server.exceptions.ServerException
+import cloud.robots.bridge.server.exceptions.ServerException
 import java.text.SimpleDateFormat
 import java.util.*
 
