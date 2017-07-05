@@ -1,31 +1,17 @@
 package cloud.robots.bridge.server.controller
 
-import cloud.robots.bridge.server.application.ServerApplication
 import cloud.robots.bridge.server.model.ErrorResponse
 import cloud.robots.bridge.server.model.SubscribeRequest
 import cloud.robots.bridge.server.model.SubscribeResponse
-import cloud.robots.bridge.server.test.BaseTest
+import cloud.robots.bridge.server.test.BaseSpringBootTest
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.amshove.kluent.`should equal to`
 import org.amshove.kluent.shouldNotBeBlank
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-
-@RunWith(SpringRunner::class)
-@SpringBootTest(classes = arrayOf(ServerApplication::class))
-@AutoConfigureMockMvc
-class ServerControllerTest : BaseTest() {
-
-    @Autowired override
-    lateinit var mockMvc: MockMvc
+class ServerControllerTest : BaseSpringBootTest() {
 
     companion object {
         val objectMapper = ObjectMapper()
