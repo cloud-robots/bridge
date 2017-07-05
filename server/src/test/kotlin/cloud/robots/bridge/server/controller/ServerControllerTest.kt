@@ -1,5 +1,6 @@
 package cloud.robots.bridge.server.controller
 
+import cloud.robots.bridge.server.application.ServerApplication
 import cloud.robots.bridge.server.model.ErrorResponse
 import cloud.robots.bridge.server.model.SubscribeRequest
 import cloud.robots.bridge.server.model.SubscribeResponse
@@ -19,7 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 
 @RunWith(SpringRunner::class)
-@SpringBootTest
+@SpringBootTest(classes = arrayOf(ServerApplication::class))
 @AutoConfigureMockMvc
 class ServerControllerTest : BaseTest() {
 

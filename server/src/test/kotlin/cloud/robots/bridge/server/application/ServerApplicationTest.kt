@@ -1,5 +1,6 @@
-package cloud.robots.bridge.server
+package cloud.robots.bridge.server.application
 
+import cloud.robots.bridge.server.main
 import org.amshove.kluent.`should be instance of`
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -7,8 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
-@SpringBootTest
-class ApplicationTests {
+@SpringBootTest(classes = arrayOf(ServerApplication::class))
+class ServerApplicationTest {
 
     @Test
     fun `spring boot context could be loaded`() {
@@ -16,9 +17,9 @@ class ApplicationTests {
 
     @Test
     fun `application class can be created`() {
-        val application = Application()
+        val application = ServerApplication()
 
-        application `should be instance of` application::class
+        application `should be instance of` ServerApplication::class
     }
 
     @Test
