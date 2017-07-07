@@ -3,6 +3,7 @@ package cloud.robots.bridge.server.controller
 import cloud.robots.bridge.server.model.ErrorResponse
 import cloud.robots.bridge.server.model.SubscribeRequest
 import cloud.robots.bridge.server.model.SubscribeResponse
+import cloud.robots.bridge.server.model.SubscriptionsResponse
 import cloud.robots.bridge.server.service.SubscriberService
 import cloud.robots.bridge.server.test.BaseSpringBootTest
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -31,10 +32,15 @@ class ServerControllerTest : BaseSpringBootTest() {
 
     const val INVALID_REQUEST = "invalid request"
     const val REQUEST_CANNOT_BE_INTERPRETED = "the request to the server can not be interpreted"
+
+    const val INVALID_SUBSCRIBER = "invalid"
+    const val SUBSCRIBER_NOT_FOUND = "subscriber not found"
+    const val NOT_FOUND_MESSAGE = "subscriber '$INVALID_SUBSCRIBER' not found"
+
   }
 
   @Autowired
-  lateinit var subscriberService : SubscriberService
+  lateinit var subscriberService: SubscriberService
 
   @Test
   fun `put empty topics in subscribe should error`() {
@@ -92,4 +98,36 @@ class ServerControllerTest : BaseSpringBootTest() {
     subscriber.topics[0].id `should equal` NEWS_TOPIC
     subscriber.topics[1].id `should equal` HELLO_TOPIC
   }
+
+  @Test
+  fun `get a valid subscriber should work`() {
+
+    val subscribeResponse = SubscribeRequest(MULTIPLE_TOPICS).put(SUBSCRIBE_PATH)
+        .andExpect(status().isOk)
+        .andDo(MockMvcResultHandlers.print())
+        .body<SubscribeResponse>()
+
+    val subscriptionsResponse = SubscribeRequest().get(SUBSCRIBE_PATH + subscribeResponse.subscriber)
+        .andExpect(status().isOk)
+        .andDo(MockMvcResultHandlers.print())
+        .body<SubscriptionsResponse>()
+
+    subscriptionsResponse.subscriber `should equal to` subscribeResponse.subscriber
+    subscriptionsResponse.topics.size `should equal to` 2
+    subscriptionsResponse.topics[0] `should equal` NEWS_TOPIC
+    subscriptionsResponse.topics[1] `should equal` HELLO_TOPIC
+  }
+
+  @Test
+  fun `get a not found subscriber should error`() {
+    val errorResponse = SubscribeRequest().get(SUBSCRIBE_PATH + INVALID_SUBSCRIBER)
+        .andExpect(status().isNotFound)
+        .andDo(MockMvcResultHandlers.print())
+        .body<ErrorResponse>()
+
+    errorResponse.error `should equal to` SUBSCRIBER_NOT_FOUND
+    errorResponse.message `should equal to` NOT_FOUND_MESSAGE
+    errorResponse.timestamp.`should not be blank`()
+  }
+
 }

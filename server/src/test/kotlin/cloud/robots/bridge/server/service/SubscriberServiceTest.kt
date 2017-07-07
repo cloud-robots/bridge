@@ -1,25 +1,24 @@
 package cloud.robots.bridge.server.service
 
+import cloud.robots.bridge.server.exceptions.SubscriberNotFoundException
 import cloud.robots.bridge.server.test.BaseSpringBootTest
-import org.amshove.kluent.`should equal to`
-import org.amshove.kluent.`should equal`
-import org.amshove.kluent.`should not be blank`
-import org.amshove.kluent.`should not equal to`
+import org.amshove.kluent.*
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 class SubscriberServiceTest : BaseSpringBootTest() {
 
-  companion object{
+  companion object {
     const val NEWS_TOPIC = "news"
     const val HELLO_TOPIC = "hello"
     val SINGLE_TOPIC = listOf(NEWS_TOPIC)
     val MULTIPLE_TOPICS = listOf(NEWS_TOPIC, HELLO_TOPIC)
+    const val INVALID_SUBSCRIBER = "invalid"
   }
 
 
   @Autowired
-  lateinit var subscriberService : SubscriberService
+  lateinit var subscriberService: SubscriberService
 
   @Test
   fun `we could create a subscriber`() {
@@ -56,4 +55,8 @@ class SubscriberServiceTest : BaseSpringBootTest() {
     another.topics[1].id `should equal` HELLO_TOPIC
   }
 
+  @Test
+  fun `we should get an exception getting a no existing subscriber`() {
+    { subscriberService.get(INVALID_SUBSCRIBER) } `should throw` SubscriberNotFoundException::class
+  }
 }
