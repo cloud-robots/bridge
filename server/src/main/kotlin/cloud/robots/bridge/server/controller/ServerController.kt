@@ -5,6 +5,8 @@ import cloud.robots.bridge.server.model.SubscribeRequest
 import cloud.robots.bridge.server.model.SubscribeResponse
 import cloud.robots.bridge.server.model.SubscriptionsResponse
 import cloud.robots.bridge.server.service.SubscriberService
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @Suppress("unused")
@@ -18,12 +20,12 @@ class ServerController(val subscriberService: SubscriberService) {
 
   @RequestMapping(value = SUBSCRIBE_PATH, method = arrayOf(RequestMethod.PUT))
   @ResponseBody()
-  fun putSubscription(@RequestBody subscribeRequest: SubscribeRequest): SubscribeResponse {
+  fun putSubscription(@RequestBody subscribeRequest: SubscribeRequest): ResponseEntity<SubscribeResponse> {
     if (subscribeRequest.topics.isEmpty()) {
       throw MissingParametersException("topics must be provided")
     }
-    val subscriber  = subscriberService.create(subscribeRequest.topics.toList())
-    return SubscribeResponse(subscriber.id)
+    val subscriber = subscriberService.create(subscribeRequest.topics.toList())
+    return ResponseEntity(SubscribeResponse(subscriber.id), HttpStatus.CREATED)
   }
 
   @RequestMapping(value = GET_SUBSCRIBER_PATH, method = arrayOf(RequestMethod.GET))

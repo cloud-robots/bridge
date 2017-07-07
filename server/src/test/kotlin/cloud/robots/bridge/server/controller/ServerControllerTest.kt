@@ -69,7 +69,7 @@ class ServerControllerTest : BaseSpringBootTest() {
   @Test
   fun `put a single topic should work`() {
     val subscribeResponse = SubscribeRequest(SINGLE_TOPIC).put(SUBSCRIBE_PATH)
-        .andExpect(status().isOk)
+        .andExpect(status().isCreated)
         .andDo(MockMvcResultHandlers.print())
         .body<SubscribeResponse>()
 
@@ -85,7 +85,7 @@ class ServerControllerTest : BaseSpringBootTest() {
   @Test
   fun `put multiple topics should work`() {
     val subscribeResponse = SubscribeRequest(MULTIPLE_TOPICS).put(SUBSCRIBE_PATH)
-        .andExpect(status().isOk)
+        .andExpect(status().isCreated)
         .andDo(MockMvcResultHandlers.print())
         .body<SubscribeResponse>()
 
@@ -103,7 +103,7 @@ class ServerControllerTest : BaseSpringBootTest() {
   fun `get a valid subscriber should work`() {
 
     val subscribeResponse = SubscribeRequest(MULTIPLE_TOPICS).put(SUBSCRIBE_PATH)
-        .andExpect(status().isOk)
+        .andExpect(status().isCreated)
         .andDo(MockMvcResultHandlers.print())
         .body<SubscribeResponse>()
 
