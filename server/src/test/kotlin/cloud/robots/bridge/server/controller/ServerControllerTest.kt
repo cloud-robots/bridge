@@ -3,11 +3,14 @@ package cloud.robots.bridge.server.controller
 import cloud.robots.bridge.server.model.ErrorResponse
 import cloud.robots.bridge.server.model.SubscribeRequest
 import cloud.robots.bridge.server.model.SubscribeResponse
+import cloud.robots.bridge.server.service.SubscriberService
 import cloud.robots.bridge.server.test.BaseSpringBootTest
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.amshove.kluent.`should equal to`
-import org.amshove.kluent.shouldNotBeBlank
+import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should not be blank`
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -30,6 +33,9 @@ class ServerControllerTest : BaseSpringBootTest() {
     const val REQUEST_CANNOT_BE_INTERPRETED = "the request to the server can not be interpreted"
   }
 
+  @Autowired
+  lateinit var subscriberService : SubscriberService
+
   @Test
   fun `put empty topics in subscribe should error`() {
     val errorResponse = SubscribeRequest().put(SUBSCRIBE_PATH)
@@ -39,7 +45,7 @@ class ServerControllerTest : BaseSpringBootTest() {
 
     errorResponse.error `should equal to` MISSING_PARAMETERS
     errorResponse.message `should equal to` TOPICS_MUST_BE_PROVIDED
-    errorResponse.timestamp.shouldNotBeBlank()
+    errorResponse.timestamp.`should not be blank`()
   }
 
   @Test
@@ -51,7 +57,7 @@ class ServerControllerTest : BaseSpringBootTest() {
 
     errorResponse.error `should equal to` INVALID_REQUEST
     errorResponse.message `should equal to` REQUEST_CANNOT_BE_INTERPRETED
-    errorResponse.timestamp.shouldNotBeBlank()
+    errorResponse.timestamp.`should not be blank`()
   }
 
   @Test
@@ -61,7 +67,13 @@ class ServerControllerTest : BaseSpringBootTest() {
         .andDo(MockMvcResultHandlers.print())
         .body<SubscribeResponse>()
 
-    subscribeResponse.subscriber.shouldNotBeBlank()
+    subscribeResponse.subscriber.`should not be blank`()
+
+    val subscriber = subscriberService.get(subscribeResponse.subscriber)
+
+    subscriber.id `should equal to` subscribeResponse.subscriber
+    subscriber.topics.size `should equal to` 1
+    subscriber.topics[0].id `should equal` NEWS_TOPIC
   }
 
   @Test
@@ -71,6 +83,13 @@ class ServerControllerTest : BaseSpringBootTest() {
         .andDo(MockMvcResultHandlers.print())
         .body<SubscribeResponse>()
 
-    subscribeResponse.subscriber.shouldNotBeBlank()
+    subscribeResponse.subscriber.`should not be blank`()
+
+    val subscriber = subscriberService.get(subscribeResponse.subscriber)
+
+    subscriber.id `should equal to` subscribeResponse.subscriber
+    subscriber.topics.size `should equal to` 2
+    subscriber.topics[0].id `should equal` NEWS_TOPIC
+    subscriber.topics[1].id `should equal` HELLO_TOPIC
   }
 }

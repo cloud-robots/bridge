@@ -20,7 +20,7 @@ class ServerController(val subscriberService: SubscriberService) {
     if (subscribeRequest.topics.isEmpty()) {
       throw MissingParametersException("topics must be provided")
     }
-    val subscriber  = subscriberService.create()
+    val subscriber  = subscriberService.create(subscribeRequest.topics.toList())
     return SubscribeResponse(subscriber.id)
   }
 }
