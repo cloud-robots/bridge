@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        use_sql_comments: true
+        format_sql: true
+        type: trace
+logging.level.org.hibernate.SQL: DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE

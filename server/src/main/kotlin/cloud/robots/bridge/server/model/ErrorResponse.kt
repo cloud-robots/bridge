@@ -8,8 +8,8 @@ data class ErrorResponse(val status: Int = 0,
                          val error: String = "",
                          val message: String = "") {
 
-    constructor(serverException: ServerException) : this(serverException.status.value(),
-            serverException.error, serverException.message)
+  constructor(serverException: ServerException) : this(serverException.status.value(),
+      serverException.error, serverException.message)
 
-    val timestamp = GetDateTime.UTC
+  val timestamp = GetDateTime.UTC
 }

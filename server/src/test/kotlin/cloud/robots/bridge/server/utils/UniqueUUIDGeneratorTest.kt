@@ -7,30 +7,30 @@ import org.junit.Test
 
 class UniqueUUIDGeneratorTest {
 
-    companion object {
-        const val UUIDS_TO_GENERATE = 10_000
-    }
+  companion object {
+    const val UUIDS_TO_GENERATE = 10_000
+  }
 
-    @Test
-    fun `class could be create`(){
-        val generator = UniqueUUIDGenerator()
+  @Test
+  fun `class could be create`() {
+    val generator = UniqueUUIDGenerator()
 
-        generator `should be instance of` UniqueUUIDGenerator::class
-    }
+    generator `should be instance of` UniqueUUIDGenerator::class
+  }
 
-    @Test
-    fun `new should work`(){
-        val uuid = UniqueUUIDGenerator.new
+  @Test
+  fun `new should work`() {
+    val uuid = UniqueUUIDGenerator.new
 
-        uuid.shouldNotBeBlank()
-    }
+    uuid.shouldNotBeBlank()
+  }
 
-    @Test
+  @Test
 
-    fun `several UUID must not repeat`(){
-        val UUIDs = (1..UUIDS_TO_GENERATE).map{ UniqueUUIDGenerator.new }.toList()
-        val uniqueUUIDs = UUIDs.distinct()
+  fun `several UUID must not repeat`() {
+    val UUIDs = (1..UUIDS_TO_GENERATE).map { UniqueUUIDGenerator.new }.toList()
+    val uniqueUUIDs = UUIDs.distinct()
 
-        uniqueUUIDs.size `should equal to` UUIDS_TO_GENERATE
-    }
+    uniqueUUIDs.size `should equal to` UUIDS_TO_GENERATE
+  }
 }

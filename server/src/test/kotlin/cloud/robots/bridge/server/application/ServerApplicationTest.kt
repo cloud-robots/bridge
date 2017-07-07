@@ -11,19 +11,19 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest(classes = arrayOf(ServerApplication::class))
 class ServerApplicationTest {
 
-    @Test
-    fun `spring boot context could be loaded`() {
-    }
+  @Test
+  fun `spring boot context could be loaded`() {
+  }
 
-    @Test
-    fun `application class can be created`() {
-        val application = ServerApplication()
+  @Test
+  fun `application class can be created`() {
+    val application = ServerApplication()
 
-        application `should be instance of` ServerApplication::class
-    }
+    application `should be instance of` ServerApplication::class
+  }
 
-    @Test
-    fun `main could be invoked`() {
-        main(arrayOf<String>())
-    }
+  @Test
+  fun `main could be invoked`() {
+    main(arrayOf<String>())
+  }
 }

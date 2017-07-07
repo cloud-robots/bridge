@@ -6,16 +6,16 @@ import org.junit.Test
 
 class GetDateTimeTest {
 
-    @Test
-    fun `we could create the class`(){
-        val getDateTime = GetDateTime()
+  @Test
+  fun `we could create the class`() {
+    val getDateTime = GetDateTime()
 
-        getDateTime `should be instance of` GetDateTime::class
-    }
+    getDateTime `should be instance of` GetDateTime::class
+  }
 
-    @Test
-    fun `UTC should work`(){
-        val dateTime = GetDateTime.UTC
-        dateTime.shouldNotBeBlank()
-    }
+  @Test
+  fun `UTC should work`() {
+    val dateTime = GetDateTime.UTC
+    dateTime.shouldNotBeBlank()
+  }
 }
