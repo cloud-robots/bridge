@@ -7,19 +7,23 @@ import cloud.robots.bridge.server.jpa.entity.Topic
 import cloud.robots.bridge.server.jpa.repository.SubscribersRepository
 import cloud.robots.bridge.server.service.SubscriberService
 import cloud.robots.bridge.server.service.SubscriberServiceImpl
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
+import org.springframework.transaction.annotation.EnableTransactionManagement
 import javax.sql.DataSource
+
+
 
 
 @Suppress("unused")
 @Configuration
 @EnableJpaRepositories(basePackageClasses = arrayOf(SubscribersRepository::class))
+@EnableTransactionManagement
 class ServerConfig {
 
   @Bean
@@ -29,9 +33,8 @@ class ServerConfig {
   fun serverControllerAdvice() = ServerControllerAdvice()
 
   @Bean
-  fun serverDataSource(): DataSource = EmbeddedDatabaseBuilder()
-      .setType(EmbeddedDatabaseType.HSQL)
-      .build()
+  @ConfigurationProperties(prefix="bridge.server.datasource.serverDB")
+  fun serverDataSource(): DataSource = DataSourceBuilder.create().build()
 
   @Bean
   fun entityManagerFactory(
