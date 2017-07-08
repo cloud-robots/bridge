@@ -30,8 +30,15 @@ class ServerController(val subscriberService: SubscriberService) {
 
   @RequestMapping(value = GET_SUBSCRIBER_PATH, method = arrayOf(RequestMethod.GET))
   @ResponseBody()
-  fun gutSubscription(@PathVariable id: String): SubscriptionsResponse {
+  fun getSubscription(@PathVariable id: String): SubscriptionsResponse {
     val subscriber = subscriberService.get(id)
     return SubscriptionsResponse(subscriber.topics.map { it.id }.toTypedArray(), subscriber.id)
+  }
+
+  @RequestMapping(value = GET_SUBSCRIBER_PATH, method = arrayOf(RequestMethod.DELETE))
+  @ResponseBody()
+  fun deleteSubscription(@PathVariable id: String): SubscribeResponse {
+    subscriberService.delete(id)
+    return SubscribeResponse(id)
   }
 }

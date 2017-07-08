@@ -1,5 +1,6 @@
 package cloud.robots.bridge.server.controller
 
+import cloud.robots.bridge.server.exceptions.SubscriberNotFoundException
 import cloud.robots.bridge.server.model.ErrorResponse
 import cloud.robots.bridge.server.model.SubscribeRequest
 import cloud.robots.bridge.server.model.SubscribeResponse
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.amshove.kluent.`should equal to`
 import org.amshove.kluent.`should equal`
 import org.amshove.kluent.`should not be blank`
+import org.amshove.kluent.`should throw`
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
@@ -102,17 +104,14 @@ class ServerControllerTest : BaseSpringBootTest() {
   @Test
   fun `get a valid subscriber should work`() {
 
-    val subscribeResponse = SubscribeRequest(MULTIPLE_TOPICS).put(SUBSCRIBE_PATH)
-        .andExpect(status().isCreated)
-        .andDo(MockMvcResultHandlers.print())
-        .body<SubscribeResponse>()
+    val subscriber = subscriberService.create(MULTIPLE_TOPICS.toList())
 
-    val subscriptionsResponse = SubscribeRequest().get(SUBSCRIBE_PATH + subscribeResponse.subscriber)
+    val subscriptionsResponse = SubscribeRequest().get(SUBSCRIBE_PATH + subscriber.id)
         .andExpect(status().isOk)
         .andDo(MockMvcResultHandlers.print())
         .body<SubscriptionsResponse>()
 
-    subscriptionsResponse.subscriber `should equal to` subscribeResponse.subscriber
+    subscriptionsResponse.subscriber `should equal to` subscriber.id
     subscriptionsResponse.topics.size `should equal to` 2
     subscriptionsResponse.topics[0] `should equal` NEWS_TOPIC
     subscriptionsResponse.topics[1] `should equal` HELLO_TOPIC
@@ -130,4 +129,31 @@ class ServerControllerTest : BaseSpringBootTest() {
     errorResponse.timestamp.`should not be blank`()
   }
 
+  @Test
+  fun `delete a valid subscriber should work`() {
+
+    val subscriber = subscriberService.create(MULTIPLE_TOPICS.toList())
+
+    val deleteResponse = SubscribeRequest().delete(SUBSCRIBE_PATH + subscriber.id)
+        .andExpect(status().isOk)
+        .andDo(MockMvcResultHandlers.print())
+        .body<SubscribeResponse>()
+
+    deleteResponse.subscriber `should equal to` subscriber.id
+
+    { subscriberService.get(subscriber.id) } `should throw` SubscriberNotFoundException::class
+
+  }
+
+  @Test
+  fun `delete a not found subscriber should error`() {
+    val errorResponse = SubscribeRequest().delete(SUBSCRIBE_PATH + INVALID_SUBSCRIBER)
+        .andExpect(status().isNotFound)
+        .andDo(MockMvcResultHandlers.print())
+        .body<ErrorResponse>()
+
+    errorResponse.error `should equal to` SUBSCRIBER_NOT_FOUND
+    errorResponse.message `should equal to` NOT_FOUND_MESSAGE
+    errorResponse.timestamp.`should not be blank`()
+  }
 }

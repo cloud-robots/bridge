@@ -59,4 +59,20 @@ class SubscriberServiceTest : BaseSpringBootTest() {
   fun `we should get an exception getting a no existing subscriber`() {
     { subscriberService.get(INVALID_SUBSCRIBER) } `should throw` SubscriberNotFoundException::class
   }
+
+  @Test
+  fun `we should get an exception deleting a no existing subscriber`() {
+    { subscriberService.delete(INVALID_SUBSCRIBER) } `should throw` SubscriberNotFoundException::class
+  }
+
+  @Test
+  fun `we could delete a subscriber`() {
+    val subscriber = subscriberService.create(MULTIPLE_TOPICS)
+
+    subscriberService.delete(subscriber.id)
+
+    val search = { subscriberService.get(subscriber.id) }
+
+    search.`should throw`(SubscriberNotFoundException::class)
+  }
 }

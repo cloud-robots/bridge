@@ -34,6 +34,12 @@ abstract class BaseSpringBootTest {
           .accept(MediaType.APPLICATION_JSON_UTF8)
           .content(ServerControllerTest.objectMapper.writeValueAsString(this)))
 
+  fun <Type : Any> Type.delete(path: String) =
+      mockMvc.perform(MockMvcRequestBuilders.delete(path)
+          .contentType(MediaType.APPLICATION_JSON_UTF8)
+          .accept(MediaType.APPLICATION_JSON_UTF8)
+          .content(ServerControllerTest.objectMapper.writeValueAsString(this)))
+
   inline fun <reified Type : Any> ResultActions.body(): Type =
       ServerControllerTest.objectMapper.readValue(this.andReturn().response.contentAsString, Type::class.java)
 }
