@@ -18,4 +18,6 @@ open class SubscriberServiceImpl(val subscribersRepository: SubscribersRepositor
     subscriber.topics = listOf()
     subscribersRepository.delete(subscriber)
   }
+
+  override fun findByTopic(id: String) = subscribersRepository.findByTopics_Id(id)
 }

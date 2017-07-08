@@ -5,4 +5,6 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface SubscribersRepository : CrudRepository<Subscriber, String>
+interface SubscribersRepository : CrudRepository<Subscriber, String>{
+  fun findByTopics_Id(id : String) : List<Subscriber>
+}

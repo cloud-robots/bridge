@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 class SubscriberServiceTest : BaseSpringBootTest() {
 
   companion object {
+    const val NOT_TOPIC = "no topic"
     const val NEWS_TOPIC = "news"
     const val HELLO_TOPIC = "hello"
     val SINGLE_TOPIC = listOf(NEWS_TOPIC)
@@ -74,5 +75,29 @@ class SubscriberServiceTest : BaseSpringBootTest() {
     val search = { subscriberService.get(subscriber.id) }
 
     search.`should throw`(SubscriberNotFoundException::class)
+  }
+
+  @Test
+  fun `we could find subscribers by topic`(){
+    val subscriber1 = subscriberService.create(SINGLE_TOPIC)
+    val subscriber2 = subscriberService.create(MULTIPLE_TOPICS)
+
+    val subscribers = subscriberService.findByTopic(NEWS_TOPIC)
+
+    subscribers.size `should equal to` 2
+    subscribers[0].id `should equal to` subscriber1.id
+    subscribers[1].id `should equal to` subscriber2.id
+
+    val subscribers2 = subscriberService.findByTopic(HELLO_TOPIC)
+
+    subscribers2.size `should equal to` 1
+    subscribers2[0].id `should equal to` subscriber2.id
+  }
+
+  @Test
+  fun `find subscribers with a not subscribed topic should return 0 subscribers`(){
+    val subscribers = subscriberService.findByTopic(NOT_TOPIC)
+
+    subscribers.size `should equal to` 0
   }
 }
