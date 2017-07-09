@@ -19,3 +19,5 @@ The default values to use are:
 - Password: [blank]
 
 This can be change in the application.yml
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/a312a136183a20ea06f3#?env%5Blocal%5D=W3siZW5hYmxlZCI6dHJ1ZSwia2V5Ijoic2VydmVyIiwidmFsdWUiOiJsb2NhbGhvc3Q6ODA4MCIsInR5cGUiOiJ0ZXh0In1d)
