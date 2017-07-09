@@ -128,6 +128,12 @@ paths:
       responses:
         200:
           description: "successful operation"
+          schema:
+            $ref: "#/definitions/PublishResponse"
+        404:
+          description: "subscription not found"
+          schema:
+            $ref: "#/definitions/Error"
         400:
           description: "bad request"
           schema:
@@ -157,10 +163,16 @@ paths:
             $ref: "#/definitions/MessageResponse"
         404:
           description: "no messages"
+          schema:
+            $ref: "#/definitions/Error"
         400:
           description: "bad request"
+          schema:
+            $ref: "#/definitions/Error"
         500:
           description: "internal server error"
+          schema:
+            $ref: "#/definitions/Error"
 definitions:
   ArrayOfStrings:
     type: "array"
@@ -209,6 +221,13 @@ definitions:
         type: "string"
       topics:
         $ref: "#/definitions/ArrayOfStrings"
+  PublishResponse:
+    type: object
+    required:
+    - message
+    properties:
+      message:
+        type: "string"
   Error:
     type: object
     properties:

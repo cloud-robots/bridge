@@ -2,6 +2,7 @@ package cloud.robots.bridge.server.application
 
 import cloud.robots.bridge.server.controller.ServerController
 import cloud.robots.bridge.server.exceptions.ServerControllerAdvice
+import cloud.robots.bridge.server.jpa.entity.Message
 import cloud.robots.bridge.server.jpa.entity.Subscriber
 import cloud.robots.bridge.server.jpa.entity.Topic
 import cloud.robots.bridge.server.jpa.repository.SubscribersRepository
@@ -40,7 +41,7 @@ class ServerConfig {
   fun entityManagerFactory(
       builder: EntityManagerFactoryBuilder, serverDataSource: DataSource): LocalContainerEntityManagerFactoryBean =
       builder.dataSource(serverDataSource)
-          .packages(Subscriber::class.java, Topic::class.java)
+          .packages(Subscriber::class.java, Topic::class.java, Message::class.java)
           .persistenceUnit("persistenceUnit")
           .build()
 

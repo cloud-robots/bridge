@@ -1,10 +1,7 @@
 package cloud.robots.bridge.server.controller
 
 import cloud.robots.bridge.server.exceptions.SubscriberNotFoundException
-import cloud.robots.bridge.server.model.ErrorResponse
-import cloud.robots.bridge.server.model.SubscribeRequest
-import cloud.robots.bridge.server.model.SubscribeResponse
-import cloud.robots.bridge.server.model.SubscriptionsResponse
+import cloud.robots.bridge.server.model.*
 import cloud.robots.bridge.server.service.SubscriberService
 import cloud.robots.bridge.server.test.BaseSpringBootTest
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -12,6 +9,7 @@ import org.amshove.kluent.`should equal to`
 import org.amshove.kluent.`should equal`
 import org.amshove.kluent.`should not be blank`
 import org.amshove.kluent.`should throw`
+import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
@@ -23,6 +21,7 @@ class ServerControllerTest : BaseSpringBootTest() {
     val objectMapper = ObjectMapper()
 
     const val SUBSCRIBE_PATH = "/subscribe/"
+    const val PUBLISH_PATH = "/publish/"
 
     const val NEWS_TOPIC = "news"
     const val HELLO_TOPIC = "hello"
@@ -39,10 +38,16 @@ class ServerControllerTest : BaseSpringBootTest() {
     const val SUBSCRIBER_NOT_FOUND = "subscriber not found"
     const val NOT_FOUND_MESSAGE = "subscriber '$INVALID_SUBSCRIBER' not found"
 
+    const val TEXT_MESSAGE = "text message"
   }
 
   @Autowired
   lateinit var subscriberService: SubscriberService
+
+  @Before
+  fun setup() {
+    subscriberService.deleteAll()
+  }
 
   @Test
   fun `put empty topics in subscribe should error`() {
@@ -148,6 +153,41 @@ class ServerControllerTest : BaseSpringBootTest() {
   @Test
   fun `delete a not found subscriber should error`() {
     val errorResponse = SubscribeRequest().delete(SUBSCRIBE_PATH + INVALID_SUBSCRIBER)
+        .andExpect(status().isNotFound)
+        .andDo(MockMvcResultHandlers.print())
+        .body<ErrorResponse>()
+
+    errorResponse.error `should equal to` SUBSCRIBER_NOT_FOUND
+    errorResponse.message `should equal to` NOT_FOUND_MESSAGE
+    errorResponse.timestamp.`should not be blank`()
+  }
+
+  @Test
+  fun `publish multiple message should work`() {
+    val subscriber1 = subscriberService.create(MULTIPLE_TOPICS.toList())
+    subscriberService.create(SINGLE_TOPIC.toList())
+
+    val publishResponse = PublishRequest(subscriber1.id, TEXT_MESSAGE).put(PUBLISH_PATH + NEWS_TOPIC)
+        .andExpect(status().isOk)
+        .andDo(MockMvcResultHandlers.print())
+        .body<PublishResponse>()
+
+    publishResponse.message.`should not be blank`()
+
+    val subscribers = subscriberService.findByTopic(NEWS_TOPIC)
+
+    subscribers.size `should equal to` 2
+    subscribers.forEach {
+      it.messages.size `should equal to` 1
+      for (message in it.messages) {
+        message.text `should equal` TEXT_MESSAGE
+      }
+    }
+  }
+
+  @Test
+  fun `publish message with invalid subscriber should fail`() {
+    val errorResponse = PublishRequest(INVALID_SUBSCRIBER, TEXT_MESSAGE).put(PUBLISH_PATH + NEWS_TOPIC)
         .andExpect(status().isNotFound)
         .andDo(MockMvcResultHandlers.print())
         .body<ErrorResponse>()

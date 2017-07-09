@@ -1,9 +1,7 @@
 package cloud.robots.bridge.server.controller
 
 import cloud.robots.bridge.server.exceptions.MissingParametersException
-import cloud.robots.bridge.server.model.SubscribeRequest
-import cloud.robots.bridge.server.model.SubscribeResponse
-import cloud.robots.bridge.server.model.SubscriptionsResponse
+import cloud.robots.bridge.server.model.*
 import cloud.robots.bridge.server.service.SubscriberService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,6 +14,8 @@ class ServerController(val subscriberService: SubscriberService) {
   companion object {
     const val SUBSCRIBE_PATH = "/subscribe/"
     const val GET_SUBSCRIBER_PATH = SUBSCRIBE_PATH + "{id}"
+    const val PUBLISH_PATH = "/publish/"
+    const val PUSH_MESSAGE_PATH = PUBLISH_PATH + "{topic}"
   }
 
   @RequestMapping(value = SUBSCRIBE_PATH, method = arrayOf(RequestMethod.PUT))
@@ -40,5 +40,12 @@ class ServerController(val subscriberService: SubscriberService) {
   fun deleteSubscription(@PathVariable id: String): SubscribeResponse {
     subscriberService.delete(id)
     return SubscribeResponse(id)
+  }
+
+  @RequestMapping(value = PUSH_MESSAGE_PATH, method = arrayOf(RequestMethod.PUT))
+  @ResponseBody()
+  fun pushMessage(@PathVariable topic: String, @RequestBody publishRequest: PublishRequest): PublishResponse {
+    val message = subscriberService.message(publishRequest.subscriber, topic, publishRequest.text)
+    return PublishResponse(message.id)
   }
 }

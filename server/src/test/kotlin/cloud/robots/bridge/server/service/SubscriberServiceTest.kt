@@ -3,6 +3,7 @@ package cloud.robots.bridge.server.service
 import cloud.robots.bridge.server.exceptions.SubscriberNotFoundException
 import cloud.robots.bridge.server.test.BaseSpringBootTest
 import org.amshove.kluent.*
+import org.junit.Before
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -15,11 +16,18 @@ class SubscriberServiceTest : BaseSpringBootTest() {
     val SINGLE_TOPIC = listOf(NEWS_TOPIC)
     val MULTIPLE_TOPICS = listOf(NEWS_TOPIC, HELLO_TOPIC)
     const val INVALID_SUBSCRIBER = "invalid"
-  }
+    const val TEXT_MESSAGE_1 = "text message 1"
+    const val TEXT_MESSAGE_2 = "text message 2"
 
+  }
 
   @Autowired
   lateinit var subscriberService: SubscriberService
+
+  @Before
+  fun setup(){
+    subscriberService.deleteAll()
+  }
 
   @Test
   fun `we could create a subscriber`() {
@@ -79,19 +87,16 @@ class SubscriberServiceTest : BaseSpringBootTest() {
 
   @Test
   fun `we could find subscribers by topic`(){
-    val subscriber1 = subscriberService.create(SINGLE_TOPIC)
-    val subscriber2 = subscriberService.create(MULTIPLE_TOPICS)
+    subscriberService.create(SINGLE_TOPIC)
+    subscriberService.create(MULTIPLE_TOPICS)
 
     val subscribers = subscriberService.findByTopic(NEWS_TOPIC)
 
     subscribers.size `should equal to` 2
-    subscribers[0].id `should equal to` subscriber1.id
-    subscribers[1].id `should equal to` subscriber2.id
 
     val subscribers2 = subscriberService.findByTopic(HELLO_TOPIC)
 
     subscribers2.size `should equal to` 1
-    subscribers2[0].id `should equal to` subscriber2.id
   }
 
   @Test
@@ -99,5 +104,43 @@ class SubscriberServiceTest : BaseSpringBootTest() {
     val subscribers = subscriberService.findByTopic(NOT_TOPIC)
 
     subscribers.size `should equal to` 0
+  }
+
+  @Test
+  fun `we could add messages`(){
+    val subscriber1 = subscriberService.create(SINGLE_TOPIC)
+    val subscriber2 = subscriberService.create(MULTIPLE_TOPICS)
+
+    subscriberService.message(subscriber1.id, NEWS_TOPIC, TEXT_MESSAGE_1)
+    subscriberService.message(subscriber1.id, NEWS_TOPIC, TEXT_MESSAGE_1)
+
+    val subscribers = subscriberService.findByTopic(NEWS_TOPIC)
+
+    subscribers.size `should equal to` 2
+    subscribers.forEach {
+      it.messages.size `should equal to` 2
+      for( message in it.messages){
+        message.text `should equal to` TEXT_MESSAGE_1
+      }
+    }
+
+    subscriberService.message(subscriber2.id, HELLO_TOPIC, TEXT_MESSAGE_2)
+
+    val subscribers2 = subscriberService.findByTopic(HELLO_TOPIC)
+
+    subscribers2.size `should equal to` 1
+    subscribers2.forEach {
+      it.messages.size `should equal to` 3
+      for( message in it.messages){
+        (message.text == TEXT_MESSAGE_1).or(message.text == TEXT_MESSAGE_2).`should be true`()
+      }
+    }
+  }
+
+  @Test
+  fun `adding messages for an invalid subscriber will fail`(){
+    {
+      subscriberService.message(INVALID_SUBSCRIBER, NEWS_TOPIC, TEXT_MESSAGE_1)
+    } `should throw` SubscriberNotFoundException::class
   }
 }
