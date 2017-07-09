@@ -8,7 +8,6 @@ import cloud.robots.bridge.server.jpa.repository.SubscribersRepository
 import cloud.robots.bridge.server.utils.UniqueUUIDGenerator
 
 open class SubscriberServiceImpl(val subscribersRepository: SubscribersRepository) : SubscriberService {
-
   override fun create(topics: List<String>) = subscribersRepository
       .save(Subscriber(UniqueUUIDGenerator.new, topics.asSequence().map { Topic(it) }.toMutableSet()))!!
 
@@ -40,5 +39,13 @@ open class SubscriberServiceImpl(val subscribersRepository: SubscribersRepositor
     val message = Message(UniqueUUIDGenerator.new, fromSubscriber.id, text, topic)
     findByTopic(topic).map { it to message }.forEach(this::addMessage)
     return message
+  }
+
+  override fun readMessages(id: String): List<Message> {
+    val subscriber = get(id)
+    val messages = subscriber.messages.sortedBy { it.created }.toList()
+    subscriber.messages.clear()
+    subscribersRepository.save(subscriber)
+    return messages
   }
 }

@@ -157,4 +157,35 @@ class SubscriberServiceTest : BaseSpringBootTest() {
 
     search.`should throw`(SubscriberNotFoundException::class)
   }
+
+  @Test
+  fun `we could read messages from a subscriber`(){
+
+    val subscriber = subscriberService.create(MULTIPLE_TOPICS)
+
+    subscriberService.message(subscriber.id, NEWS_TOPIC, TEXT_MESSAGE_1)
+    subscriberService.message(subscriber.id, HELLO_TOPIC, TEXT_MESSAGE_2)
+
+    val messages1 = subscriberService.readMessages(subscriber.id)
+
+    messages1.size `should equal to` 2
+
+    val messages2 = subscriberService.readMessages(subscriber.id)
+
+    messages2.size `should equal to` 0
+  }
+
+  @Test
+  fun `reading messages from a subscriber without messages should work`(){
+
+    val subscriber = subscriberService.create(MULTIPLE_TOPICS)
+    val messages = subscriberService.readMessages(subscriber.id)
+
+    messages.size `should equal to` 0
+  }
+
+  @Test
+  fun `reading messages from a invalid subscriber should throw`(){
+    {subscriberService.readMessages(INVALID_SUBSCRIBER)} `should throw` SubscriberNotFoundException::class
+  }
 }

@@ -22,6 +22,7 @@ class ServerControllerTest : BaseSpringBootTest() {
 
     const val SUBSCRIBE_PATH = "/subscribe/"
     const val PUBLISH_PATH = "/publish/"
+    const val MESSAGES_PATH = "/messages/"
 
     const val NEWS_TOPIC = "news"
     const val HELLO_TOPIC = "hello"
@@ -183,6 +184,55 @@ class ServerControllerTest : BaseSpringBootTest() {
   @Test
   fun `publish message with invalid subscriber should fail`() {
     val errorResponse = PublishRequest(INVALID_SUBSCRIBER, TEXT_MESSAGE).put(PUBLISH_PATH + NEWS_TOPIC)
+        .andExpect(status().isNotFound)
+        .andDo(MockMvcResultHandlers.print())
+        .body<ErrorResponse>()
+
+    errorResponse.error `should equal to` SUBSCRIBER_NOT_FOUND
+    errorResponse.message `should equal to` NOT_FOUND_MESSAGE
+    errorResponse.timestamp.`should not be blank`()
+  }
+
+  @Test
+  fun `we should get messages`() {
+    val subscriber = subscriberService.create(MULTIPLE_TOPICS.toList())
+
+    subscriberService.message(subscriber.id, NEWS_TOPIC, TEXT_MESSAGE)
+    subscriberService.message(subscriber.id, HELLO_TOPIC, TEXT_MESSAGE)
+
+    val messagesResponse = SubscribeRequest().get(MESSAGES_PATH + subscriber.id)
+        .andExpect(status().isOk)
+        .andDo(MockMvcResultHandlers.print())
+        .body<MessagesResponse>()
+
+    messagesResponse.messages.size `should equal to` 2
+    messagesResponse.subscriber `should equal to` subscriber.id
+
+    val moreMessagesResponse = SubscribeRequest().get(MESSAGES_PATH + subscriber.id)
+        .andExpect(status().isOk)
+        .andDo(MockMvcResultHandlers.print())
+        .body<MessagesResponse>()
+
+    moreMessagesResponse.messages.size `should equal to` 0
+    moreMessagesResponse.subscriber `should equal to` subscriber.id
+  }
+
+  @Test
+  fun `we should empty messages when we don't have any`() {
+    val subscriber = subscriberService.create(MULTIPLE_TOPICS.toList())
+
+    val messagesResponse = SubscribeRequest().get(MESSAGES_PATH + subscriber.id)
+        .andExpect(status().isOk)
+        .andDo(MockMvcResultHandlers.print())
+        .body<MessagesResponse>()
+
+    messagesResponse.subscriber `should equal to` subscriber.id
+    messagesResponse.messages.size `should equal to` 0
+  }
+
+  @Test
+  fun `get messages with invalid subscriber should fail`() {
+    val errorResponse = PublishRequest().get(MESSAGES_PATH + INVALID_SUBSCRIBER)
         .andExpect(status().isNotFound)
         .andDo(MockMvcResultHandlers.print())
         .body<ErrorResponse>()

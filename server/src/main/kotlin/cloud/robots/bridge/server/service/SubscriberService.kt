@@ -10,4 +10,5 @@ interface SubscriberService {
   fun findByTopic(id: String) : List<Subscriber>
   fun deleteAll()
   fun message(from : String, topic: String, text: String) : Message
+  fun readMessages(id : String): List<Message>
 }

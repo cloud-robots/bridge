@@ -162,7 +162,7 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
         404:
-          description: "no messages"
+          description: "no valid subscriber"
           schema:
             $ref: "#/definitions/Error"
         400:
@@ -188,11 +188,37 @@ definitions:
         type: "string"
       text:
         type: "string"
+  ReadableMessage:
+    type: "object"
+    required:
+    - subscriber
+    - text
+    - topic
+    - time
+    properties:
+      subscriber:
+        type: "string"
+      text:
+        type: "string"
+      topic:
+        type: "string"
+      time:
+        type: "string"
+        format: "date-time"
   MessageResponse:
     type: "object"
+    required:
+    - subscriber
+    - messages
     properties:
+      subscriber:
+        type: "string"
       messages:
-        $ref: "#/definitions/ArrayOfMessages"
+        $ref: "#/definitions/ArrayOfReadableMessages"
+  ArrayOfReadableMessages:
+    type: "array"
+    items:
+       $ref: "#/definitions/ReadableMessage"
   ArrayOfMessages:
     type: "array"
     items:
