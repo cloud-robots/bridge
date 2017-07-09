@@ -28,11 +28,13 @@ open class SubscriberServiceImpl(val subscribersRepository: SubscribersRepositor
 
   override fun deleteAll() = subscribersRepository.findAll().forEach(this::delete)
 
-  fun addMessage(item: Pair<Subscriber, Message>) {
-    val (subscriber, message) = item
+  private fun addMessage(subscriber: Subscriber, message: Message) {
     subscriber.messages.add(message)
     subscribersRepository.save(subscriber)
   }
+
+  private operator fun <T : Any, K : Any> Pair<K, T>.invoke(function: (K, T) -> Unit) = function(this.first, this.second)
+  private fun <T : Any, K : Any> Iterable<Pair<K, T>>.forEach(function: (K, T) -> Unit) = this.forEach { it(function) }
 
   override fun message(from: String, topic: String, text: String): Message {
     val fromSubscriber = get(from)
