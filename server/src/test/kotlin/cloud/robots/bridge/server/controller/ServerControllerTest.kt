@@ -86,7 +86,6 @@ class ServerControllerTest : BaseSpringBootTest() {
 
     subscriber.id `should equal to` subscribeResponse.subscriber
     subscriber.topics.size `should equal to` 1
-    subscriber.topics[0].id `should equal` NEWS_TOPIC
   }
 
   @Test
@@ -102,8 +101,6 @@ class ServerControllerTest : BaseSpringBootTest() {
 
     subscriber.id `should equal to` subscribeResponse.subscriber
     subscriber.topics.size `should equal to` 2
-    subscriber.topics[0].id `should equal` NEWS_TOPIC
-    subscriber.topics[1].id `should equal` HELLO_TOPIC
   }
 
   @Test
@@ -118,8 +115,6 @@ class ServerControllerTest : BaseSpringBootTest() {
 
     subscriptionsResponse.subscriber `should equal to` subscriber.id
     subscriptionsResponse.topics.size `should equal to` 2
-    subscriptionsResponse.topics[0] `should equal` NEWS_TOPIC
-    subscriptionsResponse.topics[1] `should equal` HELLO_TOPIC
   }
 
   @Test

@@ -8,8 +8,8 @@ data class Subscriber(@Id val id: String = "",
                       @ManyToMany(cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
                       @JoinTable(joinColumns = arrayOf(JoinColumn(name = "subscriber_id", referencedColumnName = "id")),
                           inverseJoinColumns = arrayOf(JoinColumn(name = "topic_id", referencedColumnName = "id")))
-                      var topics: List<Topic> = arrayListOf(),
+                      var topics: MutableSet<Topic> = mutableSetOf(),
                       @ManyToMany(cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
                       @JoinTable(joinColumns = arrayOf(JoinColumn(name = "subscriber_id", referencedColumnName = "id")),
                           inverseJoinColumns = arrayOf(JoinColumn(name = "message_id", referencedColumnName = "id")))
-                      var messages : Set<Message> = setOf())
+                      var messages : MutableSet<Message> = mutableSetOf())

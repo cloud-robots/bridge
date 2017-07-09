@@ -34,7 +34,6 @@ class SubscriberServiceTest : BaseSpringBootTest() {
     val subscriber = subscriberService.create(SINGLE_TOPIC)
     subscriber.id.`should not be blank`()
     subscriber.topics.size `should equal to` 1
-    subscriber.topics[0].id `should equal` NEWS_TOPIC
   }
 
   @Test
@@ -44,13 +43,10 @@ class SubscriberServiceTest : BaseSpringBootTest() {
 
     subscriber1.id.`should not be blank`()
     subscriber1.topics.size `should equal to` 1
-    subscriber1.topics[0].id `should equal` NEWS_TOPIC
 
     subscriber2.id.`should not be blank`()
     subscriber2.id `should not equal to` subscriber1.id
     subscriber2.topics.size `should equal to` 2
-    subscriber2.topics[0].id `should equal` NEWS_TOPIC
-    subscriber2.topics[1].id `should equal` HELLO_TOPIC
   }
 
   @Test
@@ -60,8 +56,6 @@ class SubscriberServiceTest : BaseSpringBootTest() {
 
     another.id `should equal to` subscriber.id
     another.topics.size `should equal to` 2
-    another.topics[0].id `should equal` NEWS_TOPIC
-    another.topics[1].id `should equal` HELLO_TOPIC
   }
 
   @Test
