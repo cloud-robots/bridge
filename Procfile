@@ -1,0 +1,1 @@
+web: java -Dserver.port=$PORT -jar /app/server/target/cloud-robots.bridge.server-0.0.1-SNAPSHOT.jar
