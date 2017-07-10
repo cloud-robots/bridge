@@ -15,7 +15,7 @@ class DefaultBridgeImpl extends BasicRestClient implements Bridge {
 
   private String subscriber;
 
-  public DefaultBridgeImpl(final String baseUrl, final int timeout) {
+  DefaultBridgeImpl(final String baseUrl, final int timeout) {
     super(baseUrl, timeout);
   }
 

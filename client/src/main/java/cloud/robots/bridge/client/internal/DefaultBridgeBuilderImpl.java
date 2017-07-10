@@ -13,7 +13,7 @@ class DefaultBridgeBuilderImpl implements BridgeBuilder {
   private int timeout = 25000;
   private List<String> topics = new ArrayList<>();
 
-  DefaultBridgeBuilderImpl(){
+  DefaultBridgeBuilderImpl() {
 
   }
 

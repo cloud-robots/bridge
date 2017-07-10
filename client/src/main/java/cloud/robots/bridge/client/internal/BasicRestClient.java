@@ -30,13 +30,13 @@ abstract class BasicRestClient {
   private final static ObjectMapper objectMapper = new ObjectMapper();
   private final int timeout;
 
-  protected BasicRestClient(String baseUrl, int timeout) {
-    this.baseUrl  = baseUrl;
+  BasicRestClient(String baseUrl, int timeout) {
+    this.baseUrl = baseUrl;
     this.timeout = timeout;
   }
 
-  protected <Type, Other> Other request(Function<String, Request> method, String url, Type content,
-                                        Class<Other> type, int status) throws BridgeException {
+  <Type, Other> Other request(Function<String, Request> method, String url, Type content,
+                              Class<Other> type, int status) throws BridgeException {
     final String json = getJsonRequest(content);
     final Response response = execute(method.apply(baseUrl + url), json);
     final HttpResponse httpResponse = getHttpResponse(status, response);
@@ -66,7 +66,7 @@ abstract class BasicRestClient {
 
   private <Type> Type getValue(InputStream jsonResult, Class<Type> type) throws BridgeJsonException {
     final Type value;
-    try{
+    try {
       value = objectMapper.readValue(jsonResult, type);
     } catch (IOException e) {
       throw new BridgeJsonException(ERROR_PARSING_JSON, e);
