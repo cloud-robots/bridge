@@ -4,7 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubscribeRequest {
-  private List<String> topics = new ArrayList<String>();
+
+  public SubscribeRequest() {
+  }
+
+  public SubscribeRequest(List<String> topics) {
+    this.topics = topics;
+  }
+
+  private List<String> topics = new ArrayList<>();
 
   public List<String> getTopics() {
     return topics;

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Function;
 
-public abstract class BasicRestClient {
+abstract class BasicRestClient {
 
   private static final String APPLICATION_JSON = "application/json";
   private static final String CANT_SERIALIZE_INTO_JSON = "can't serialize into JSON";
@@ -28,9 +28,11 @@ public abstract class BasicRestClient {
 
   private final String baseUrl;
   private final static ObjectMapper objectMapper = new ObjectMapper();
+  private final int timeout;
 
-  protected BasicRestClient(String baseUrl) {
+  protected BasicRestClient(String baseUrl, int timeout) {
     this.baseUrl  = baseUrl;
+    this.timeout = timeout;
   }
 
   protected <Type, Other> Other request(Function<String, Request> method, String url, Type content,
@@ -52,6 +54,8 @@ public abstract class BasicRestClient {
       response = request
           .addHeader(HttpHeaders.ACCEPT, APPLICATION_JSON)
           .addHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON)
+          .connectTimeout(timeout)
+          .socketTimeout(timeout)
           .bodyString(json, ContentType.APPLICATION_JSON)
           .execute();
     } catch (IOException e) {
