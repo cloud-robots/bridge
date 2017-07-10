@@ -1,6 +1,6 @@
-package cloud.robots.bridge.client;
+package cloud.robots.bridge.client.internal;
 
-import cloud.robots.bridge.client.internal.DefaultBridgeBuilderImpl;
+import cloud.robots.bridge.client.BridgeBuilder;
 
 public class BridgeBuilderFactory {
   public static BridgeBuilder Default(){

@@ -1,5 +1,6 @@
 package cloud.robots.bridge.client;
 
+import cloud.robots.bridge.client.internal.BridgeBuilderFactory;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.not;

@@ -7,11 +7,15 @@ import cloud.robots.bridge.client.exceptions.BridgeException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultBridgeBuilderImpl implements BridgeBuilder {
+class DefaultBridgeBuilderImpl implements BridgeBuilder {
 
   private String url = "http://localhost:8080";
   private int timeout = 25000;
   private List<String> topics = new ArrayList<>();
+
+  DefaultBridgeBuilderImpl(){
+
+  }
 
   private static DefaultBridgeBuilderImpl copy(final DefaultBridgeBuilderImpl other) {
     DefaultBridgeBuilderImpl newObject = new DefaultBridgeBuilderImpl();
