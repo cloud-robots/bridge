@@ -37,7 +37,7 @@ abstract class BasicRestClient {
 
   <RequestType, ResponseType> ResponseType request(Function<String, Request> method, String url, RequestType content,
                                                    Class<ResponseType> type, int status) throws BridgeException {
-    final String json = getJsonRequest(content);
+    final String json = (content != null) ? getJsonRequest(content) : null;
     final Response response = execute(method.apply(baseUrl + url), json);
     final HttpResponse httpResponse = getHttpResponse(status, response);
 
@@ -48,16 +48,23 @@ abstract class BasicRestClient {
     }
   }
 
+  <ResponseType> ResponseType request(Function<String, Request> method, String url, Class<ResponseType> type,
+                                      int status) throws BridgeException {
+    return request(method, url, null, type, status);
+  }
+
   private Response execute(Request request, String json) throws BridgeHttpException {
     final Response response;
     try {
-      response = request
+      Request newRequest = request
           .addHeader(HttpHeaders.ACCEPT, APPLICATION_JSON)
           .addHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON)
           .connectTimeout(timeout)
-          .socketTimeout(timeout)
-          .bodyString(json, ContentType.APPLICATION_JSON)
-          .execute();
+          .socketTimeout(timeout);
+      if (json != null) {
+        newRequest = newRequest.bodyString(json, ContentType.APPLICATION_JSON);
+      }
+      response = newRequest.execute();
     } catch (IOException e) {
       throw new BridgeHttpException(EXCEPTION_EXECUTING_REQUEST, e);
     }

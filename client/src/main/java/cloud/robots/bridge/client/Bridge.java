@@ -7,4 +7,6 @@ import java.util.List;
 public interface Bridge {
   void subscribe(final List<String> topics) throws BridgeException;
   String getSubscriber();
+  void stop();
+  void send(final String topic, final String text) throws BridgeException;
 }

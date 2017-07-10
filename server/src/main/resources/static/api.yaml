@@ -109,7 +109,7 @@ paths:
     put:
       tags:
       - "publish"
-      summary: "publish a new message in a topic"
+      summary: "publish a new text in a topic"
       consumes:
       - "application/json"
       produces:
@@ -249,9 +249,9 @@ definitions:
   PublishResponse:
     type: object
     required:
-    - message
+    - text
     properties:
-      message:
+      text:
         type: "string"
   Error:
     type: object
@@ -264,5 +264,5 @@ definitions:
         format: "int32"
       error:
         type: "string"
-      message:
+      text:
         type: "string"
