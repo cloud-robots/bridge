@@ -35,8 +35,8 @@ abstract class BasicRestClient {
     this.timeout = timeout;
   }
 
-  <Type, Other> Other request(Function<String, Request> method, String url, Type content,
-                              Class<Other> type, int status) throws BridgeException {
+  <RequestType, ResponseType> ResponseType request(Function<String, Request> method, String url, RequestType content,
+                                                   Class<ResponseType> type, int status) throws BridgeException {
     final String json = getJsonRequest(content);
     final Response response = execute(method.apply(baseUrl + url), json);
     final HttpResponse httpResponse = getHttpResponse(status, response);
@@ -79,7 +79,7 @@ abstract class BasicRestClient {
     try {
       json = objectMapper.writeValueAsString(content);
     } catch (JsonProcessingException e) {
-      throw new BridgeJsonException(CANT_SERIALIZE_INTO_JSON);
+      throw new BridgeJsonException(CANT_SERIALIZE_INTO_JSON, e);
     }
     return json;
   }
