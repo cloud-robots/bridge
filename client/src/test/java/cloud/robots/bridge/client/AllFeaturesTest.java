@@ -18,7 +18,7 @@ public class AllFeaturesTest {
   private static final String TEST_URL = "http://localhost:8080";
   private static final int TIMEOUT = 1500;
   private static final int REFRESH = 1500;
-  private static final long MAX_LOOPS = 100_000_000_000L;
+  private static final long MAX_LOOPS = 10_000_000_000L;
 
   private Bridge bridge;
 
@@ -39,12 +39,13 @@ public class AllFeaturesTest {
   }
 
   @Test
-  public void connect() throws Exception {
+  public void everythingShouldWork() throws Exception {
     bridge = BridgeBuilderFactory.Default()
         .connect(TEST_URL)
         .timeout(TIMEOUT)
         .subscribe("hello", this::helloMessage)
         .subscribe("news", this::newsMessage)
+        .ignoreSelfMessages(false)
         .refresh(REFRESH)
         .build();
 

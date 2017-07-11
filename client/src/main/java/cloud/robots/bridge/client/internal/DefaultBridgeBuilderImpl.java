@@ -16,6 +16,7 @@ class DefaultBridgeBuilderImpl implements BridgeBuilder {
   private String url = "http://localhost:8080";
   private int timeout = 25000;
   private int refresh = 15000;
+  private boolean ignoreSelf = true;
   private HashMap<String, Consumer<Message>> subscriptions = new HashMap<>();
 
   DefaultBridgeBuilderImpl() {
@@ -27,6 +28,7 @@ class DefaultBridgeBuilderImpl implements BridgeBuilder {
     newObject.url = other.url;
     newObject.timeout = other.timeout;
     newObject.refresh = other.refresh;
+    newObject.ignoreSelf = other.ignoreSelf;
     newObject.subscriptions = new HashMap<>(other.subscriptions);
     return newObject;
   }
@@ -60,11 +62,18 @@ class DefaultBridgeBuilderImpl implements BridgeBuilder {
   }
 
   @Override
+  public BridgeBuilder ignoreSelfMessages(boolean ignoreSelf) {
+    DefaultBridgeBuilderImpl newObject = copy(this);
+    newObject.ignoreSelf = ignoreSelf;
+    return newObject;
+  }
+
+  @Override
   public Bridge build() throws BridgeException {
-    if(subscriptions.size()==0){
+    if (subscriptions.size() == 0) {
       throw new BridgeBuilderException(NOT_SUBSCRIPTIONS);
     }
-    DefaultBridgeImpl bridge = new DefaultBridgeImpl(url, timeout, refresh);
+    DefaultBridgeImpl bridge = new DefaultBridgeImpl(url, timeout, refresh, ignoreSelf);
     subscriptions.forEach(bridge::addSubscription);
     return bridge;
   }

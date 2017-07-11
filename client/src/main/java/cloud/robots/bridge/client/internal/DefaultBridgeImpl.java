@@ -33,14 +33,27 @@ class DefaultBridgeImpl extends DefaultRestClient implements Bridge {
 
   private final ScheduledExecutorService executor;
   private final int refresh;
+  private final boolean ignoreSelf;
 
-  DefaultBridgeImpl(final String baseUrl, final int timeout, final int refresh) {
+  DefaultBridgeImpl(final String baseUrl, final int timeout, final int refresh, final boolean ignoreSelf) {
     super(baseUrl, timeout);
     this.refresh = refresh;
+    this.ignoreSelf = ignoreSelf;
     executor = Executors.newScheduledThreadPool(1);
   }
 
+  boolean shouldSkipMessage(final Message message){
+    if(ignoreSelf){
+      if(message.getSubscriber().equals(subscriber)){
+        return true;
+      }
+    }
+    return false;
+  }
   private void processMessage(final Message message) {
+    if(shouldSkipMessage(message)){
+      return;
+    }
     if (topicsSubscriptions.containsKey(message.getTopic())) {
       topicsSubscriptions.get(message.getTopic()).accept(message);
     }

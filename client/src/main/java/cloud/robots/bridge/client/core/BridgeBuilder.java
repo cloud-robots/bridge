@@ -10,5 +10,6 @@ public interface BridgeBuilder {
   BridgeBuilder subscribe(String topic, Consumer<Message> callback);
   BridgeBuilder timeout(final int milliseconds);
   BridgeBuilder refresh(final int  milliseconds);
+  BridgeBuilder ignoreSelfMessages(boolean ignoreSelf);
   Bridge build() throws BridgeException;
 }
