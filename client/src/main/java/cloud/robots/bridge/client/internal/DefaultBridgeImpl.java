@@ -99,7 +99,7 @@ class DefaultBridgeImpl extends DefaultRestClient implements Bridge {
   }
 
   @Override
-  public void stop() throws BridgeStateException {
+  public void stop() throws BridgeException {
     if (!started.get()) {
       throw new BridgeStateException(BRIDGE_NOT_STARTED);
     }
