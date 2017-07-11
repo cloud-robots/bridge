@@ -1,8 +1,9 @@
-package cloud.robots.bridge.client.model;
+package cloud.robots.bridge.client.internal.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class SubscribeRequest {
 
   public SubscribeRequest() {

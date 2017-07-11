@@ -1,8 +1,8 @@
 package cloud.robots.bridge.client.internal;
 
-import cloud.robots.bridge.client.exceptions.BridgeException;
-import cloud.robots.bridge.client.exceptions.BridgeHttpException;
-import cloud.robots.bridge.client.exceptions.BridgeJsonException;
+import cloud.robots.bridge.client.core.exceptions.BridgeException;
+import cloud.robots.bridge.client.internal.exceptions.BridgeHttpException;
+import cloud.robots.bridge.client.internal.exceptions.BridgeJsonException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpHeaders;
@@ -15,9 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Function;
 
-abstract class BasicRestClient {
+abstract class DefaultRestClient {
 
-  private static final String APPLICATION_JSON = "application/json";
   private static final String CANT_SERIALIZE_INTO_JSON = "can't serialize into JSON";
   private static final String EXCEPTION_EXECUTING_REQUEST = "exception executing request";
   private static final String ERROR_HTTP_STATUS = "error getting http status";
@@ -30,7 +29,7 @@ abstract class BasicRestClient {
   private final static ObjectMapper objectMapper = new ObjectMapper();
   private final int timeout;
 
-  BasicRestClient(String baseUrl, int timeout) {
+  DefaultRestClient(String baseUrl, int timeout) {
     this.baseUrl = baseUrl;
     this.timeout = timeout;
   }
@@ -57,8 +56,8 @@ abstract class BasicRestClient {
     final Response response;
     try {
       Request newRequest = request
-          .addHeader(HttpHeaders.ACCEPT, APPLICATION_JSON)
-          .addHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON)
+          .addHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.getMimeType())
+          .addHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
           .connectTimeout(timeout)
           .socketTimeout(timeout);
       if (json != null) {

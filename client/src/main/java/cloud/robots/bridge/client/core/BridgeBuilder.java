@@ -1,7 +1,7 @@
-package cloud.robots.bridge.client;
+package cloud.robots.bridge.client.core;
 
-import cloud.robots.bridge.client.exceptions.BridgeException;
-import cloud.robots.bridge.client.model.Message;
+import cloud.robots.bridge.client.core.exceptions.BridgeException;
+import cloud.robots.bridge.client.core.model.Message;
 
 import java.util.function.Consumer;
 

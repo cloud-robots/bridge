@@ -1,22 +1,22 @@
 package cloud.robots.bridge.client.internal;
 
-import cloud.robots.bridge.client.Bridge;
-import cloud.robots.bridge.client.BridgeBuilder;
-import cloud.robots.bridge.client.exceptions.BridgeException;
-import cloud.robots.bridge.client.model.Message;
+import cloud.robots.bridge.client.core.Bridge;
+import cloud.robots.bridge.client.core.BridgeBuilder;
+import cloud.robots.bridge.client.core.exceptions.BridgeException;
+import cloud.robots.bridge.client.core.model.Message;
+import cloud.robots.bridge.client.internal.exceptions.BridgeBuilderException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.function.Consumer;
 
 class DefaultBridgeBuilderImpl implements BridgeBuilder {
 
+  private static final String NOT_SUBSCRIPTIONS = "not subscription to any topic provided. Use subscribe()";
+
   private String url = "http://localhost:8080";
   private int timeout = 25000;
   private int refresh = 15000;
-  private List<String> topics = new ArrayList<>();
-  private HashMap<String, Consumer<Message>> hooks = new HashMap<>();
+  private HashMap<String, Consumer<Message>> subscriptions = new HashMap<>();
 
   DefaultBridgeBuilderImpl() {
 
@@ -27,8 +27,7 @@ class DefaultBridgeBuilderImpl implements BridgeBuilder {
     newObject.url = other.url;
     newObject.timeout = other.timeout;
     newObject.refresh = other.refresh;
-    newObject.topics = new ArrayList<>(other.topics);
-    newObject.hooks = new HashMap<>(other.hooks);
+    newObject.subscriptions = new HashMap<>(other.subscriptions);
     return newObject;
   }
 
@@ -42,8 +41,7 @@ class DefaultBridgeBuilderImpl implements BridgeBuilder {
   @Override
   public BridgeBuilder subscribe(final String topic, Consumer<Message> callback) {
     DefaultBridgeBuilderImpl newObject = copy(this);
-    newObject.topics.add(topic);
-    newObject.hooks.put(topic, callback);
+    newObject.subscriptions.put(topic, callback);
     return newObject;
   }
 
@@ -63,10 +61,11 @@ class DefaultBridgeBuilderImpl implements BridgeBuilder {
 
   @Override
   public Bridge build() throws BridgeException {
-    DefaultBridgeImpl bridge = new DefaultBridgeImpl(url, timeout);
-    bridge.subscribe(topics);
-    hooks.forEach(bridge::addHook);
-    bridge.autoRefresh(refresh);
+    if(subscriptions.size()==0){
+      throw new BridgeBuilderException(NOT_SUBSCRIPTIONS);
+    }
+    DefaultBridgeImpl bridge = new DefaultBridgeImpl(url, timeout, refresh);
+    subscriptions.forEach(bridge::addSubscription);
     return bridge;
   }
 }

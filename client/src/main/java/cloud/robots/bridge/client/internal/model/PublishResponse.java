@@ -1,5 +1,6 @@
-package cloud.robots.bridge.client.model;
+package cloud.robots.bridge.client.internal.model;
 
+@SuppressWarnings("unused")
 public class PublishResponse {
   private String message;
 

@@ -1,7 +1,10 @@
-package cloud.robots.bridge.client.model;
+package cloud.robots.bridge.client.internal.model;
+
+import cloud.robots.bridge.client.core.model.Message;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class MessagesResponse {
   private String subscriber;
   private List<Message> messages;

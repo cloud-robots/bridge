@@ -1,5 +1,6 @@
-package cloud.robots.bridge.client.model;
+package cloud.robots.bridge.client.core.model;
 
+@SuppressWarnings("unused")
 public class Message {
   private String subscriber;
   private String text;
