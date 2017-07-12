@@ -1,0 +1,14 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./Message.html" title="cloud.robots.bridge.client.model.Message" alt="" coords="39,214,246,445"/>
+<area shape="rect" id="node1" href="./Message.html" title="&lt;TABLE&gt;" alt="" coords="29,209,257,450"/>
+<area shape="rect" id="node2_1" href="./MessagesResponse.html" title="cloud.robots.bridge.client.model.MessagesResponse" alt="" coords="16,11,269,154"/>
+<area shape="rect" id="node2" href="./MessagesResponse.html" title="&lt;TABLE&gt;" alt="" coords="5,6,280,159"/>
+<area shape="rect" id="node3_2" href="./PublishRequest.html" title="cloud.robots.bridge.client.model.PublishRequest" alt="" coords="315,11,522,154"/>
+<area shape="rect" id="node3" href="./PublishRequest.html" title="&lt;TABLE&gt;" alt="" coords="305,6,533,159"/>
+<area shape="rect" id="node4_3" href="./PublishResponse.html" title="cloud.robots.bridge.client.model.PublishResponse" alt="" coords="567,33,758,132"/>
+<area shape="rect" id="node4" href="./PublishResponse.html" title="&lt;TABLE&gt;" alt="" coords="557,28,769,137"/>
+<area shape="rect" id="node5_4" href="./SubscribeRequest.html" title="cloud.robots.bridge.client.model.SubscribeRequest" alt="" coords="804,26,1044,139"/>
+<area shape="rect" id="node5" href="./SubscribeRequest.html" title="&lt;TABLE&gt;" alt="" coords="793,21,1055,145"/>
+<area shape="rect" id="node6_5" href="./SubscribeResponse.html" title="cloud.robots.bridge.client.model.SubscribeResponse" alt="" coords="1090,33,1297,132"/>
+<area shape="rect" id="node6" href="./SubscribeResponse.html" title="&lt;TABLE&gt;" alt="" coords="1079,28,1307,137"/>
+</map>

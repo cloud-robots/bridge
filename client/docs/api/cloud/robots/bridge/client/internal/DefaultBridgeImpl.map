@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="../core/Bridge.html" title="cloud.robots.bridge.client.core.Bridge" alt="" coords="16,93,408,233"/>
+<area shape="rect" id="node1" href="../core/Bridge.html" title="&lt;TABLE&gt;" alt="" coords="5,87,419,238"/>
+<area shape="rect" id="node3_1" href="./DefaultBridgeImpl.html" title="cloud.robots.bridge.client.internal.DefaultBridgeImpl" alt="" coords="294,374,757,751"/>
+<area shape="rect" id="node3" href="./DefaultBridgeImpl.html" title="&lt;TABLE&gt;" alt="" coords="283,369,767,757"/>
+<area shape="rect" id="node2_2" href="../core/model/Message.html" title="cloud.robots.bridge.client.core.model.Message" alt="" coords="397,811,654,1053"/>
+<area shape="rect" id="node2" href="../core/model/Message.html" title="&lt;TABLE&gt;" alt="" coords="386,805,665,1059"/>
+<area shape="rect" id="node4_3" href="./DefaultRestClient.html" title="cloud.robots.bridge.client.internal.DefaultRestClient" alt="" coords="454,11,1226,315"/>
+<area shape="rect" id="node4" href="./DefaultRestClient.html" title="&lt;TABLE&gt;" alt="" coords="443,5,1237,320"/>
+</map>
