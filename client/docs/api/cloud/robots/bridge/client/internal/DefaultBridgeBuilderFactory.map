@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node1_0" href="../core/BridgeBuilder.html" title="cloud.robots.bridge.client.core.BridgeBuilder" alt="" coords="15,155,934,325"/>
-<area shape="rect" id="node1" href="../core/BridgeBuilder.html" title="&lt;TABLE&gt;" alt="" coords="5,150,945,330"/>
-<area shape="rect" id="node2_1" href="../core/BridgeBuilderFactory.html" title="cloud.robots.bridge.client.core.BridgeBuilderFactory" alt="" coords="980,192,1300,288"/>
-<area shape="rect" id="node2" href="../core/BridgeBuilderFactory.html" title="&lt;TABLE&gt;" alt="" coords="969,187,1311,293"/>
-<area shape="rect" id="node3_2" href="./DefaultBridgeBuilderFactory.html" title="cloud.robots.bridge.client.internal.DefaultBridgeBuilderFactory" alt="" coords="713,11,900,95"/>
-<area shape="rect" id="node3" href="./DefaultBridgeBuilderFactory.html" title="&lt;TABLE&gt;" alt="" coords="703,6,911,101"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node1_0" href="../internal/DefaultBridgeImpl.html" title="cloud.robots.bridge.client.internal.DefaultBridgeImpl" alt="" coords="15,11,662,283"/>
-<area shape="rect" id="node1" href="../internal/DefaultBridgeImpl.html" title="&lt;TABLE&gt;" alt="" coords="5,5,673,288"/>
-<area shape="rect" id="node2_1" href="./Message.html" title="cloud.robots.bridge.client.model.Message" alt="" coords="483,342,690,573"/>
-<area shape="rect" id="node2" href="./Message.html" title="&lt;TABLE&gt;" alt="" coords="473,337,701,578"/>
-<area shape="rect" id="node3_2" href="./MessagesResponse.html" title="cloud.robots.bridge.client.model.MessagesResponse" alt="" coords="708,75,961,218"/>
-<area shape="rect" id="node3" href="./MessagesResponse.html" title="&lt;TABLE&gt;" alt="" coords="697,70,972,223"/>
-</map>

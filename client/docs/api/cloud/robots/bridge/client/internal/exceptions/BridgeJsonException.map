@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node1_0" href="../../core/exceptions/BridgeException.html" title="cloud.robots.bridge.client.core.exceptions.BridgeException" alt="" coords="16,11,437,93"/>
-<area shape="rect" id="node1" href="../../core/exceptions/BridgeException.html" title="&lt;TABLE&gt;" alt="" coords="5,6,448,98"/>
-<area shape="rect" id="node2_1" href="./BridgeJsonException.html" title="cloud.robots.bridge.client.internal.exceptions.BridgeJsonException" alt="" coords="45,152,409,221"/>
-<area shape="rect" id="node2" href="./BridgeJsonException.html" title="&lt;TABLE&gt;" alt="" coords="34,147,419,227"/>
-</map>
